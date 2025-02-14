@@ -21,6 +21,8 @@ services:
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/stocks_db
+    volumes:
+      - ./dags:/opt/airflow/dags  # Mount DAGs folder
     entrypoint: /bin/bash -c "airflow db init && airflow users create --username admin --password admin --firstname Air --lastname Flow --role Admin --email admin@example.com"
 
   airflow-webserver:
@@ -33,6 +35,8 @@ services:
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/stocks_db
+    volumes:
+      - ./dags:/opt/airflow/dags  # Mount DAGs folder
     command: webserver
     restart: always
 
@@ -44,6 +48,8 @@ services:
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/stocks_db
+    volumes:
+      - ./dags:/opt/airflow/dags  # Mount DAGs folder
     command: scheduler
     restart: always
 
