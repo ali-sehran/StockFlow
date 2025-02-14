@@ -5,7 +5,7 @@ import plotly.express as px
 import os
 import datetime
 
-DB_HOST = "localhost"
+DB_HOST = "172.17.0.1"
 DB_NAME = "stocks_db"
 DB_USER = "airflow"
 DB_PASS = "airflow"
