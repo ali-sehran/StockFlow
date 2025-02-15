@@ -5,11 +5,10 @@ import requests
 import psycopg2
 import os
 
-# API key and stock symbol
-API_KEY = os.environ.get("ALPHA_VANTAGE_API_KEY")  # Set this in your .env or Airflow Variables
+API_KEY = os.environ.get("ALPHA_VANTAGE_API_KEY") 
 STOCK_SYMBOL = "AAPL"
 
-# Database credentials
+
 DB_HOST = "postgres"
 DB_NAME = "stocks_db"
 DB_USER = "airflow"
@@ -18,7 +17,7 @@ DB_PASS = "airflow"
 def fetch_and_store_stock_prices():
     """Fetches real-time stock prices from an API and inserts only new records into PostgreSQL"""
 
-    # API request URL
+
     url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={STOCK_SYMBOL}&interval=1min&apikey={API_KEY}"
     response = requests.get(url)
     data = response.json()
@@ -27,10 +26,10 @@ def fetch_and_store_stock_prices():
         print("Error fetching stock data or API limit reached")
         return
     
-    # Extract stock prices
+
     time_series = data["Time Series (1min)"]
     
-    # Connect to PostgreSQL
+
     conn = psycopg2.connect(
         host=DB_HOST,
         database=DB_NAME,
@@ -40,7 +39,6 @@ def fetch_and_store_stock_prices():
     conn.autocommit = True  
     cur = conn.cursor()
 
-    # Loop through the latest timestamps
     for timestamp, values in time_series.items():
         stock_price = float(values["1. open"])
         high = float(values["2. high"])
@@ -48,11 +46,11 @@ def fetch_and_store_stock_prices():
         close = float(values["4. close"])
         volume = int(values["5. volume"])
 
-        # Check if this timestamp already exists in the database
+    
         cur.execute("SELECT COUNT(*) FROM stock_prices WHERE timestamp = %s AND symbol = %s", (timestamp, STOCK_SYMBOL))
         result = cur.fetchone()[0]
 
-        if result == 0:  # Insert only if the timestamp is not present
+        if result == 0: 
             cur.execute(
                 """
                 INSERT INTO stock_prices (symbol, price, high, low, close, volume, timestamp)
@@ -80,7 +78,7 @@ default_args = {
 dag = DAG(
     'fetch_stock_data',
     default_args=default_args,
-    schedule_interval='*/10 * * * *',  # Runs every minute
+    schedule_interval='*/10 * * * *',  
     catchup=False
 )
 
