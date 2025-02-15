@@ -8,7 +8,7 @@
 - ✅ **Securely accessible via Cloudflare Tunnel** on a personal server
 
 🚀 **Built with modern DevOps & Data Engineering tools for a production-grade workflow.**
-🔗 **Live Demo:** https://saved-stuff-general-collected.trycloudflare.com/
+🔗 Live Demo: https://saved-stuff-general-collected.trycloudflare.com/
 ---
 
 ## 🔥 Tech Stack Used
